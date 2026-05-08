@@ -23,13 +23,28 @@ document.addEventListener('DOMContentLoaded', () => {
         const userPicFile = document.getElementById('userPic').files[0];
         const idCardPicFile = document.getElementById('idCardPic').files[0];
 
-        if (userPicFile) data.userPic = await toBase64(userPicFile);
-        if (idCardPicFile) data.idCardPic = await toBase64(idCardPicFile);
+        let userPicBase64 = '';
+        let idCardPicBase64 = '';
+
+        if (userPicFile) userPicBase64 = await toBase64(userPicFile);
+        if (idCardPicFile) idCardPicBase64 = await toBase64(idCardPicFile);
+
+        const finalData = {
+            fullName: data.fullName,
+            fatherName: data.fatherName,
+            cnic: data.cnic,
+            paymentMethod: data.paymentMethod,
+            accountNumber: data.accountNumber,
+            accountOwner: data.accountOwner,
+            address: data.address,
+            userPic: userPicBase64,
+            idCardPic: idCardPicBase64
+        };
 
         // Send data to Supabase
         const { error } = await supabaseClient
             .from('candidates')
-            .insert([data]);
+            .insert([finalData]);
 
         if (!error) {
             form.style.opacity = '0';
@@ -42,8 +57,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (header) header.classList.add('hidden');
             }, 300);
         } else {
-            console.error('Supabase Error:', error);
-            alert('کچھ غلط ہو گیا، دوبارہ کوشش کریں۔');
+            console.error('Supabase Error Details:', error);
+            alert('کچھ غلط ہو گیا: ' + error.message);
         }
     });
 
