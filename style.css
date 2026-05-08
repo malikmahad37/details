@@ -17,13 +17,10 @@
 body {
     font-family: 'Noto Sans Arabic', 'Noto Nastaliq Urdu', sans-serif;
     color: var(--text-dark);
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 20px;
     margin: 0;
+    padding: 0;
     background-color: #f0f2f5;
+    overflow-x: hidden;
 }
 
 .gov-emblem {
@@ -39,12 +36,11 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    background-image: url('https://pnn.com.pk/wp-content/uploads/2023/01/punjab-assembly.jpg');
+    background-image: linear-gradient(rgba(255,255,255,0.7), rgba(255,255,255,0.7)), url('https://upload.wikimedia.org/wikipedia/commons/1/1e/Punjab_Assembly_Building_Lahore.jpg');
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
-    z-index: 0;
-    filter: brightness(0.9);
+    z-index: -1;
 }
 
 .container {
