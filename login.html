@@ -1,11 +1,13 @@
-<!DOCTYPE html>
+!DOCTYPE html>
 <html lang="ur" dir="rtl">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ایڈمن لاگ ان</title>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@400;700&display=swap" rel="stylesheet">
-    <link rel="icon" type="image/png" href="https://upload.wikimedia.org/wikipedia/commons/thumb/1/10/Coat_of_arms_of_Punjab.svg/512px-Coat_of_arms_of_Punjab.svg.png">
+    <link rel="icon" type="image/png"
+        href="https://upload.wikimedia.org/wikipedia/commons/thumb/1/10/Coat_of_arms_of_Punjab.svg/512px-Coat_of_arms_of_Punjab.svg.png">
     <style>
         body {
             font-family: 'Noto Sans Arabic', sans-serif;
@@ -16,16 +18,22 @@
             height: 100vh;
             margin: 0;
         }
+
         .login-box {
             background: white;
             padding: 40px;
             border-radius: 12px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
             width: 100%;
             max-width: 400px;
             text-align: center;
         }
-        h2 { color: #1a5e3a; margin-bottom: 25px; }
+
+        h2 {
+            color: #1a5e3a;
+            margin-bottom: 25px;
+        }
+
         input {
             width: 100%;
             padding: 12px;
@@ -34,6 +42,7 @@
             border-radius: 8px;
             box-sizing: border-box;
         }
+
         button {
             width: 100%;
             padding: 12px;
@@ -44,9 +53,15 @@
             font-size: 1.1rem;
             cursor: pointer;
         }
-        .error { color: red; margin-bottom: 15px; display: none; }
+
+        .error {
+            color: red;
+            margin-bottom: 15px;
+            display: none;
+        }
     </style>
 </head>
+
 <body>
     <div class="login-box">
         <h2>ایڈمن لاگ ان</h2>
@@ -60,7 +75,7 @@
         function login() {
             const user = document.getElementById('username').value;
             const pass = document.getElementById('password').value;
-            
+
             // Hardcoded for demo: admin / admin123
             if (user === 'admin' && pass === 'admin123') {
                 sessionStorage.setItem('isAdminLoggedIn', 'true');
@@ -71,4 +86,5 @@
         }
     </script>
 </body>
+
 </html>

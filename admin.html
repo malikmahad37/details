@@ -112,6 +112,21 @@
         }
         .refresh-btn { background: #1a5e3a; color: white; }
         .logout-btn { background: #ef4444; color: white; }
+        .delete-btn {
+            background: #fee2e2;
+            color: #b91c1c;
+            border: 1px solid #f87171;
+            width: 100%;
+            margin-top: 15px;
+            padding: 8px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background 0.3s;
+        }
+        .delete-btn:hover {
+            background: #fecaca;
+        }
     </style>
 </head>
 <body>
@@ -135,6 +150,25 @@
         // Login check
         if (sessionStorage.getItem('isAdminLoggedIn') !== 'true') {
             window.location.href = 'login.html';
+        }
+
+        async function deleteEntry(id) {
+            if (confirm('کیا آپ واقعی یہ ڈیٹا ڈیلیٹ کرنا چاہتے ہیں؟ (Are you sure?)')) {
+                try {
+                    const { error } = await supabaseClient
+                        .from('candidates')
+                        .delete()
+                        .eq('id', id);
+
+                    if (error) {
+                        alert('Error deleting: ' + error.message);
+                    } else {
+                        loadData(); // Reload list
+                    }
+                } catch (err) {
+                    alert('Unexpected error: ' + err.message);
+                }
+            }
         }
 
         async function loadData() {
@@ -188,6 +222,7 @@
                                     </td>
                                 </tr>
                             </table>
+                            <button class="delete-btn" onclick="deleteEntry('${item.id}')">ڈیلیٹ کریں (Delete)</button>
                         </div>
                     `;
                     list.insertAdjacentHTML('beforeend', tableHtml);
