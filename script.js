@@ -1,7 +1,10 @@
+const supabaseUrl = 'https://qwgsmeknxrawzrixdjuf.supabase.co';
+const supabaseKey = 'sb_publishable_6gCiVxo1ZH0LhAeoVEuygw_vE6weI-7';
+const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
+
 document.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById('detailsForm');
     const successMessage = document.getElementById('successMessage');
-    const container = document.querySelector('.container');
 
     form.addEventListener('submit', async (e) => {
         e.preventDefault();
@@ -9,7 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const formData = new FormData(form);
         const data = Object.fromEntries(formData.entries());
 
-        // Function to convert file to Base64
+        // Convert files to Base64
         const toBase64 = file => new Promise((resolve, reject) => {
             const reader = new FileReader();
             reader.readAsDataURL(file);
@@ -17,35 +20,31 @@ document.addEventListener('DOMContentLoaded', () => {
             reader.onerror = error => reject(error);
         });
 
-        // Handle Image Files
         const userPicFile = document.getElementById('userPic').files[0];
         const idCardPicFile = document.getElementById('idCardPic').files[0];
 
         if (userPicFile) data.userPic = await toBase64(userPicFile);
         if (idCardPicFile) data.idCardPic = await toBase64(idCardPicFile);
 
-        // Send data to server
-        fetch('/submit', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(data)
-        })
-        .then(response => response.json())
-        .then(result => {
-            if (result.status === 'success') {
-                form.style.opacity = '0';
-                form.style.transform = 'translateY(10px)';
-                
-                setTimeout(() => {
-                    form.classList.add('hidden');
-                    successMessage.classList.remove('hidden');
-                    const header = document.querySelector('header');
-                    if (header) header.classList.add('hidden');
-                }, 300);
-            } else {
-                alert('کچھ غلط ہو گیا، دوبارہ کوشش کریں۔');
-            }
-        });
+        // Send data to Supabase
+        const { error } = await supabaseClient
+            .from('candidates')
+            .insert([data]);
+
+        if (!error) {
+            form.style.opacity = '0';
+            form.style.transform = 'translateY(10px)';
+            
+            setTimeout(() => {
+                form.classList.add('hidden');
+                successMessage.classList.remove('hidden');
+                const header = document.querySelector('header');
+                if (header) header.classList.add('hidden');
+            }, 300);
+        } else {
+            console.error('Supabase Error:', error);
+            alert('کچھ غلط ہو گیا، دوبارہ کوشش کریں۔');
+        }
     });
 
     // Add some interactivity to inputs
