@@ -23,7 +23,7 @@ body {
     align-items: center;
     padding: 20px;
     margin: 0;
-    background: #f0f2f5;
+    background-color: #f0f2f5;
 }
 
 .gov-emblem {
@@ -39,10 +39,12 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    background: url('https://upload.wikimedia.org/wikipedia/commons/thumb/1/1e/Punjab_Assembly_Building_Lahore.jpg/1280px-Punjab_Assembly_Building_Lahore.jpg') no-repeat center center fixed;
+    background-image: url('https://pnn.com.pk/wp-content/uploads/2023/01/punjab-assembly.jpg');
+    background-position: center;
+    background-repeat: no-repeat;
     background-size: cover;
     z-index: 0;
-    filter: brightness(0.8);
+    filter: brightness(0.9);
 }
 
 .container {
