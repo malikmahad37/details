@@ -1,5 +1,5 @@
 const supabaseUrl = 'https://qwgsmeknxrawzrixdjuf.supabase.co';
-const supabaseKey = 'sb_publishable_6gCiVxo1ZH0LhAeoVEuygw_vE6weI-7';
+const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InF3Z3NtZWtueHJhd3pyaXhkanVmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgyMDY2NzIsImV4cCI6MjA5Mzc4MjY3Mn0.Du3hIqUuTQ_qJEaKIs7R98KLgUBsAMamweRF-pphBxA';
 const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
 
 document.addEventListener('DOMContentLoaded', () => {
