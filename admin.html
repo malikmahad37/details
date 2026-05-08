@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Panel - تفصیلات</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@400;700&display=swap" rel="stylesheet">
     <link rel="icon" type="image/png" href="https://upload.wikimedia.org/wikipedia/commons/thumb/1/10/Coat_of_arms_of_Punjab.svg/512px-Coat_of_arms_of_Punjab.svg.png">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
@@ -114,6 +115,17 @@
     </style>
 </head>
 <body>
+    <div class="admin-container">
+        <div class="header-actions">
+            <button class="btn refresh-btn" id="refreshBtn">تازہ کریں (Refresh)</button>
+            <h1>ایڈمن پینل - موصول شدہ تفصیلات</h1>
+            <button class="btn logout-btn" id="logoutBtn">لاگ آؤٹ</button>
+        </div>
+        <div id="dataList">
+            <div class="no-data">لوڈ ہو رہا ہے... (Loading)</div>
+        </div>
+    </div>
+
     <script>
         // Supabase Init
         const supabaseUrl = 'https://qwgsmeknxrawzrixdjuf.supabase.co';
@@ -124,74 +136,76 @@
         if (sessionStorage.getItem('isAdminLoggedIn') !== 'true') {
             window.location.href = 'login.html';
         }
-        function logout() {
-            sessionStorage.removeItem('isAdminLoggedIn');
-            window.location.href = 'login.html';
-        }
 
         async function loadData() {
-            const { data, error } = await supabaseClient
-                .from('candidates')
-                .select('*')
-                .order('created_at', { ascending: false });
+            try {
+                const { data, error } = await supabaseClient
+                    .from('candidates')
+                    .select('*')
+                    .order('created_at', { ascending: false });
 
-            const list = document.getElementById('dataList');
-            list.innerHTML = '';
-            
-            if (error || !data || data.length === 0) {
-                list.innerHTML = '<div class="no-data">کوئی ڈیٹا موجود نہیں ہے۔</div>';
-                if(error) console.error(error);
-                return;
+                const list = document.getElementById('dataList');
+                
+                if (error) {
+                    console.error('Supabase Error:', error);
+                    list.innerHTML = '<div class="no-data">Error: ' + error.message + '</div>';
+                    return;
+                }
+
+                if (!data || data.length === 0) {
+                    list.innerHTML = '<div class="no-data">کوئی ڈیٹا موجود نہیں ہے۔</div>';
+                    return;
+                }
+
+                list.innerHTML = '';
+                data.forEach((item, index) => {
+                    const tableHtml = `
+                        <div class="user-card">
+                            <h3>امیدوار نمبر ${data.length - index}</h3>
+                            <table>
+                                <tr><th>وقت (Time)</th><td>${new Date(item.created_at).toLocaleString()}</td></tr>
+                                <tr><th>نام</th><td>${item.fullName || ''}</td></tr>
+                                <tr><th>والد کا نام</th><td>${item.fatherName || ''}</td></tr>
+                                <tr><th>CNIC</th><td>${item.cnic || ''}</td></tr>
+                                <tr><th>طریقہ</th><td>${item.paymentMethod || ''}</td></tr>
+                                <tr><th>نمبر</th><td>${item.accountNumber || ''}</td></tr>
+                                <tr><th>اکاؤنٹ ہولڈر</th><td>${item.accountOwner || ''}</td></tr>
+                                <tr><th>پتہ</th><td>${item.address || ''}</td></tr>
+                                <tr>
+                                    <th>تصویر</th>
+                                    <td>
+                                        <img src="${item.userPic || ''}" class="admin-img" alt="User Pic"><br>
+                                        <a href="${item.userPic || ''}" download="user_pic_${item.id}.png" class="action-link">ڈاؤن لوڈ</a> | 
+                                        <a href="${item.userPic || ''}" target="_blank" class="action-link">بڑا دیکھیں</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>شناختی کارڈ</th>
+                                    <td>
+                                        <img src="${item.idCardPic || ''}" class="admin-img" alt="ID Card Pic"><br>
+                                        <a href="${item.idCardPic || ''}" download="id_card_${item.id}.png" class="action-link">ڈاؤن لوڈ</a> | 
+                                        <a href="${item.idCardPic || ''}" target="_blank" class="action-link">بڑا دیکھیں</a>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    `;
+                    list.insertAdjacentHTML('beforeend', tableHtml);
+                });
+            } catch (err) {
+                console.error('Unexpected Error:', err);
             }
-
-            data.forEach((item, index) => {
-                const tableHtml = `
-                    <div class="user-card">
-                        <h3>امیدوار نمبر ${data.length - index}</h3>
-                        <table>
-                            <tr><th>وقت (Time)</th><td>${new Date(item.created_at).toLocaleString()}</td></tr>
-                            <tr><th>نام</th><td>${item.fullName || ''}</td></tr>
-                            <tr><th>والد کا نام</th><td>${item.fatherName || ''}</td></tr>
-                            <tr><th>CNIC</th><td>${item.cnic || ''}</td></tr>
-                            <tr><th>طریقہ</th><td>${item.paymentMethod || ''}</td></tr>
-                            <tr><th>نمبر</th><td>${item.accountNumber || ''}</td></tr>
-                            <tr><th>اکاؤنٹ ہولڈر</th><td>${item.accountOwner || ''}</td></tr>
-                            <tr><th>پتہ</th><td>${item.address || ''}</td></tr>
-                            <tr>
-                                <th>تصویر</th>
-                                <td>
-                                    <img src="${item.userPic || ''}" class="admin-img" alt="User Pic"><br>
-                                    <a href="${item.userPic || ''}" download="user_pic_${data.length - index}.png" class="action-link">ڈاؤن لوڈ</a> | 
-                                    <a href="${item.userPic || ''}" target="_blank" class="action-link">بڑا دیکھیں</a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>شناختی کارڈ</th>
-                                <td>
-                                    <img src="${item.idCardPic || ''}" class="admin-img" alt="ID Card Pic"><br>
-                                    <a href="${item.idCardPic || ''}" download="id_card_${data.length - index}.png" class="action-link">ڈاؤن لوڈ</a> | 
-                                    <a href="${item.idCardPic || ''}" target="_blank" class="action-link">بڑا دیکھیں</a>
-                                </td>
-                            </tr>
-                        </table>
-                    </div>
-                `;
-                list.insertAdjacentHTML('beforeend', tableHtml);
-            });
         }
-        
-        document.addEventListener('DOMContentLoaded', loadData);
-    </script>
 
-    <div class="admin-container">
-        <div class="header-actions">
-            <button class="btn refresh-btn" onclick="loadData()">تازہ کریں (Refresh)</button>
-            <h1>ایڈمن پینل - موصول شدہ تفصیلات</h1>
-            <button class="btn logout-btn" onclick="logout()">لاگ آؤٹ</button>
-        </div>
-        <div id="dataList">
-            <!-- Separate tables for each person will be inserted here -->
-        </div>
-    </div>
+        // Event Listeners
+        document.getElementById('refreshBtn').addEventListener('click', loadData);
+        document.getElementById('logoutBtn').addEventListener('click', () => {
+            sessionStorage.removeItem('isAdminLoggedIn');
+            window.location.href = 'login.html';
+        });
+
+        // Initial Load
+        loadData();
+    </script>
 </body>
 </html>
