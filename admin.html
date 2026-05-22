@@ -127,6 +127,20 @@
         .delete-btn:hover {
             background: #fecaca;
         }
+        .btn-load-img {
+            background: #1a5e3a;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background 0.2s;
+        }
+        .btn-load-img:hover {
+            background: #113f27;
+        }
     </style>
 </head>
 <body>
@@ -152,6 +166,37 @@
             window.location.href = 'login.html';
         }
 
+        async function loadImage(id, field, containerId) {
+            const container = document.getElementById(containerId);
+            container.innerHTML = '<span style="color: #6b7280; font-size: 0.8rem;">لوڈ ہو رہا ہے... (Loading...)</span>';
+            try {
+                const { data, error } = await supabaseClient
+                    .from('candidates')
+                    .select(field)
+                    .eq('id', id)
+                    .single();
+
+                if (error) {
+                    container.innerHTML = `<span style="color: red; font-size: 0.8rem;">خرابی: ${error.message}</span>`;
+                    return;
+                }
+
+                const imgSrc = data[field];
+                if (!imgSrc) {
+                    container.innerHTML = '<span style="color: #6b7280; font-size: 0.8rem;">تصویر دستیاب نہیں ہے</span>';
+                    return;
+                }
+
+                container.innerHTML = `
+                    <img src="${imgSrc}" class="admin-img" alt="${field === 'userPic' ? 'User Pic' : 'ID Card Pic'}"><br>
+                    <a href="${imgSrc}" download="${field === 'userPic' ? 'user_pic' : 'id_card'}_${id}.png" class="action-link">ڈاؤن لوڈ</a> | 
+                    <a href="${imgSrc}" target="_blank" class="action-link">بڑا دیکھیں</a>
+                `;
+            } catch (err) {
+                container.innerHTML = `<span style="color: red; font-size: 0.8rem;">خرابی: ${err.message}</span>`;
+            }
+        }
+
         async function deleteEntry(id) {
             if (confirm('کیا آپ واقعی یہ ڈیٹا ڈیلیٹ کرنا چاہتے ہیں؟ (Are you sure?)')) {
                 try {
@@ -173,13 +218,14 @@
 
         async function loadData() {
             try {
+                const list = document.getElementById('dataList');
+                list.innerHTML = '<div class="no-data">لوڈ ہو رہا ہے... (Loading)</div>';
+
                 const { data, error } = await supabaseClient
                     .from('candidates')
-                    .select('*')
+                    .select('id, created_at, fullName, fatherName, cnic, paymentMethod, accountNumber, accountOwner, address')
                     .order('created_at', { ascending: false });
 
-                const list = document.getElementById('dataList');
-                
                 if (error) {
                     console.error('Supabase Error:', error);
                     list.innerHTML = '<div class="no-data">Error: ' + error.message + '</div>';
@@ -207,18 +253,14 @@
                                 <tr><th>پتہ</th><td>${item.address || ''}</td></tr>
                                 <tr>
                                     <th>تصویر</th>
-                                    <td>
-                                        <img src="${item.userPic || ''}" class="admin-img" alt="User Pic"><br>
-                                        <a href="${item.userPic || ''}" download="user_pic_${item.id}.png" class="action-link">ڈاؤن لوڈ</a> | 
-                                        <a href="${item.userPic || ''}" target="_blank" class="action-link">بڑا دیکھیں</a>
+                                    <td id="userPic-container-${item.id}">
+                                        <button class="btn-load-img" onclick="loadImage('${item.id}', 'userPic', 'userPic-container-${item.id}')">تصویر دکھائیں (Show Image)</button>
                                     </td>
                                 </tr>
                                 <tr>
                                     <th>شناختی کارڈ</th>
-                                    <td>
-                                        <img src="${item.idCardPic || ''}" class="admin-img" alt="ID Card Pic"><br>
-                                        <a href="${item.idCardPic || ''}" download="id_card_${item.id}.png" class="action-link">ڈاؤن لوڈ</a> | 
-                                        <a href="${item.idCardPic || ''}" target="_blank" class="action-link">بڑا دیکھیں</a>
+                                    <td id="idCardPic-container-${item.id}">
+                                        <button class="btn-load-img" onclick="loadImage('${item.id}', 'idCardPic', 'idCardPic-container-${item.id}')">تصویر دکھائیں (Show Image)</button>
                                     </td>
                                 </tr>
                             </table>
